@@ -16,8 +16,10 @@ class Pawn : public Entity {
 
  protected:
   static constexpr float kRadius = 7.f;
+  static constexpr float kTurnSpeed = M_PI / 4.f;
 
   std::mt19937 rng_;
   float turn_timer_ = 0.f;
+  float target_dir_ = 0.f;
 };
 

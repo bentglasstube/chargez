@@ -4,6 +4,7 @@
 
 #include "common.h"
 #include "pawn.h"
+#include "title_screen.h"
 
 bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
   if (state_ == State::Playing) {
@@ -116,7 +117,7 @@ void GameScreen::draw(Graphics& graphics) const {
 #endif
 }
 
-Screen* GameScreen::next_screen() const { return nullptr; }
+Screen* GameScreen::next_screen() const { return new TitleScreen(); }
 
 void GameScreen::transition(State state) {
   fade_timer_ = 0;
