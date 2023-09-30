@@ -131,5 +131,6 @@ void GameScreen::spawn_enemy() {
 }
 
 bool GameScreen::out_of_bounds(const Entity& e) const {
-  return e.pos().mag2() >= 350 * 350;
+  const float r = 350 + e.shape().radius;
+  return e.pos().mag2() >= r * r;
 }
