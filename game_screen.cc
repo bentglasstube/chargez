@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "common.h"
+#include "dodgy_boi.h"
 #include "pawn.h"
 #include "title_screen.h"
 
@@ -123,6 +124,10 @@ void GameScreen::draw(Graphics& graphics) const {
     graphics.draw_rect({0, 0}, {graphics.width(), graphics.height()}, color,
                        true);
   }
+
+#ifndef NDEBUG
+  text_.draw(graphics, std::to_string(player_.vel().mag()), 0, 0);
+#endif
 }
 
 Screen* GameScreen::next_screen() const { return new TitleScreen(); }
@@ -135,8 +140,16 @@ void GameScreen::transition(State state) {
 void GameScreen::spawn_enemy() {
   std::uniform_real_distribution<float> angle(0.f, 2.f * M_PI);
   const float facing = angle(rng_);
-  entities_.emplace_back(new Pawn{vec2::polar(340.f, facing),
-                                  facing + static_cast<float>(M_PI), rng_()});
+  const float back = facing + static_cast<float>(M_PI);
+
+  const float roll = std::uniform_real_distribution<float>(0.f, 1.f)(rng_);
+
+  if (roll < 0.8f) {
+    entities_.emplace_back(new Pawn{vec2::polar(340.f, facing), back, rng_()});
+  } else {
+    entities_.emplace_back(
+        new DodgyBoi{vec2::polar(340.f, facing), back, rng_()});
+  }
 }
 
 bool GameScreen::out_of_bounds(const Entity& e) const {

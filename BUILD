@@ -84,7 +84,13 @@ cc_library(
 
 cc_library(
     name = "enemies",
-    hdrs = ["pawn.h"],
-    srcs = ["pawn.cc"],
+    hdrs = [
+        "pawn.h",
+        "dodgy_boi.h",
+    ],
+    srcs = [
+        "pawn.cc",
+        "dodgy_boi.cc",
+    ],
     deps = [":entity"],
 )
