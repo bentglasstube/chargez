@@ -10,6 +10,8 @@ class Entity {
   Entity(vec2 pos, float facing, float mass)
       : pos_(pos), facing_(facing), mass_(mass) {}
 
+  virtual ~Entity() {}
+
   void update(float t) { update(t, {0, 0}); }
   void update(float t, vec2 force);
   virtual void update(float t, const Entity&) { update(t); }

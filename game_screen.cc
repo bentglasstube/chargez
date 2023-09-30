@@ -34,8 +34,10 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
     for (auto&& e : entities_) {
       e->update(t, player_);
     }
+    std::erase_if(entities_,
+                  [this](const auto& e) { return out_of_bounds(*e); });
 
-    if (player_.pos().mag2() >= 350 * 350) {
+    if (out_of_bounds(player_)) {
       transition(State::Dead);
     }
 
@@ -112,6 +114,10 @@ void GameScreen::transition(State state) {
 void GameScreen::spawn_enemy() {
   std::uniform_real_distribution<float> angle(0.f, 2.f * M_PI);
   const float facing = angle(rng_);
-  entities_.emplace_back(
-      new Pawn{vec2::polar(340.f, facing), facing + M_PI, rng_()});
+  entities_.emplace_back(new Pawn{vec2::polar(340.f, facing),
+                                  facing + static_cast<float>(M_PI), rng_()});
+}
+
+bool GameScreen::out_of_bounds(const Entity& e) const {
+  return e.pos().mag2() >= 350 * 350;
 }

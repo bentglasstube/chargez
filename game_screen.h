@@ -34,8 +34,9 @@ class GameScreen : public Screen {
   int fade_timer_ = 0;
   float play_timer_ = 0.f;
   float spawn_timer_ = 0.f;
-  int score_ = 0;
 
   void transition(State state);
   void spawn_enemy();
+
+  bool out_of_bounds(const Entity& e) const;
 };
