@@ -3,12 +3,19 @@
 #include <sstream>
 
 #include "common.h"
+#include "pawn.h"
 
 bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
   if (state_ == State::Playing) {
     const float t = elapsed / 1000.f;
 
     play_timer_ += t;
+    spawn_timer_ += t;
+
+    if (spawn_timer_ > 1.f) {
+      spawn_timer_ -= 1.f;
+      spawn_enemy();
+    }
 
     vec2 force;
     if (input.key_held(Input::Button::Up)) force.y += 1.f;
@@ -22,6 +29,10 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
       player_.update(t, vec2::polar(1000.f, force.angle()));
     } else {
       player_.update(t);
+    }
+
+    for (auto&& e : entities_) {
+      e->update(t, player_);
     }
 
     if (player_.pos().mag2() >= 350 * 350) {
@@ -50,6 +61,9 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
 }
 
 void GameScreen::draw(Graphics& graphics) const {
+  for (const auto& e : entities_) {
+    e->draw(graphics);
+  }
   player_.draw(graphics);
   graphics.draw_circle({graphics.width() / 2, graphics.height() / 2}, 350,
                        0xffffffff, false);
@@ -93,4 +107,11 @@ Screen* GameScreen::next_screen() const { return nullptr; }
 void GameScreen::transition(State state) {
   fade_timer_ = 0;
   state_ = state;
+}
+
+void GameScreen::spawn_enemy() {
+  std::uniform_real_distribution<float> angle(0.f, 2.f * M_PI);
+  const float facing = angle(rng_);
+  entities_.emplace_back(
+      new Pawn{vec2::polar(340.f, facing), facing + M_PI, rng_()});
 }
