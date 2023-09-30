@@ -29,9 +29,9 @@ struct vec2 {
     return dx * dx + dy * dy;
   }
 
-  constexpr float angle() const { return std::atan2(y, x); }
-  constexpr float mag2() const { return x * x + y * y; }
-  constexpr float mag() const { return std::sqrt(x * x + y * y); }
+  float angle() const { return std::atan2(y, x); }
+  float mag2() const { return x * x + y * y; }
+  float mag() const { return std::sqrt(x * x + y * y); }
 
   static vec2 polar(float r, float theta) {
     return {r * std::cos(theta), r * std::sin(theta)};
