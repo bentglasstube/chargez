@@ -8,7 +8,7 @@ class Player : public Entity {
  public:
   Player() {}
 
-  void draw(Graphics& graphics) const;
+  void draw(Graphics& graphics) const override;
   void charge();
 
   circle shape() const override { return {pos_, kRadius}; };
