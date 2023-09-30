@@ -4,11 +4,11 @@ void Pawn::update(float t, const Entity&) {
   turn_timer_ -= t;
   if (turn_timer_ < 0) {
     turn_timer_ += std::uniform_real_distribution<float>(1.f, 2.5f)(rng_);
-    vel_ += vec2::polar(100.f, facing_);
+    vel_ += vec2::polar(50.f, facing_);
     facing_ = std::uniform_real_distribution<float>(facing_ - 0.5f,
                                                     facing_ + 0.5f)(rng_);
   }
-  Entity::update(t, vec2::polar(100.f, facing_));
+  Entity::update(t, vec2::polar(50.f, facing_));
   Entity::update(t);
 }
 
