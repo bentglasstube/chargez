@@ -1,5 +1,6 @@
 #include "title_screen.h"
 
+#include "common.h"
 #include "game_screen.h"
 #include "sprite.h"
 #include "util.h"
@@ -26,14 +27,6 @@ bool TitleScreen::update(const Input& input, Audio&, unsigned int elapsed) {
 
   return true;
 }
-
-namespace {
-int tween(int a, int b, float value) {
-  if (value <= 0.f) return a;
-  if (value >= 1.f) return b;
-  return a + static_cast<int>(std::round((b - a) * value));
-}
-}  // namespace
 
 void TitleScreen::draw(Graphics& graphics) const {
   space_.draw(graphics);

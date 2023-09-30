@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cmath>
-#include <functional>
 
 struct vec2 {
   float x = 0, y = 0;
@@ -37,3 +36,9 @@ struct vec2 {
     return {r * std::cos(theta), r * std::sin(theta)};
   }
 };
+
+inline int tween(int a, int b, float v) {
+  if (v <= 0.f) return a;
+  if (v >= 1.f) return b;
+  return a + static_cast<int>(std::round((b - a) * v));
+}

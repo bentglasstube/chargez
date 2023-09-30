@@ -26,6 +26,7 @@ cc_library(
         "title_screen.h",
     ],
     deps = [
+        ":common",
         ":player",
         ":space",
         "@libgam//:screen",
