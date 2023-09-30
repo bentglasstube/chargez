@@ -28,9 +28,15 @@ struct vec2 {
     return dx * dx + dy * dy;
   }
 
-  float angle() const { return std::atan2(y, x); }
-  float mag2() const { return x * x + y * y; }
-  float mag() const { return std::sqrt(x * x + y * y); }
+  constexpr vec2 norm() const {
+    const float m = mag();
+    return {x / m, y / m};
+  }
+
+  constexpr float angle() const { return std::atan2(y, x); }
+  constexpr float mag2() const { return x * x + y * y; }
+  constexpr float mag() const { return std::sqrt(x * x + y * y); }
+  constexpr vec2 perp() const { return {-y, x}; }
 
   static vec2 polar(float r, float theta) {
     return {r * std::cos(theta), r * std::sin(theta)};
@@ -42,3 +48,15 @@ inline int tween(int a, int b, float v) {
   if (v >= 1.f) return b;
   return a + static_cast<int>(std::round((b - a) * v));
 }
+
+struct circle {
+  vec2 pos;
+  float radius;
+
+  constexpr bool intersect(const circle& other) const {
+    const float r = radius + other.radius;
+    return pos.dist2(other.pos) <= r * r;
+  }
+};
+
+vec2 closest_point_on_line(vec2 a, vec2 b, vec2 p);

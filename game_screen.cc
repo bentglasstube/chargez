@@ -18,10 +18,10 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
     }
 
     vec2 force;
-    if (input.key_held(Input::Button::Up)) force.y += 1.f;
-    if (input.key_held(Input::Button::Down)) force.y -= 1.f;
-    if (input.key_held(Input::Button::Left)) force.x += 1.f;
-    if (input.key_held(Input::Button::Right)) force.x -= 1.f;
+    if (input.key_held(Input::Button::Up)) force.y -= 1.f;
+    if (input.key_held(Input::Button::Down)) force.y += 1.f;
+    if (input.key_held(Input::Button::Left)) force.x -= 1.f;
+    if (input.key_held(Input::Button::Right)) force.x += 1.f;
 
     if (input.key_pressed(Input::Button::A)) player_.charge();
 
@@ -39,6 +39,13 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
 
     if (out_of_bounds(player_)) {
       transition(State::Dead);
+    }
+
+    for (auto&& e : entities_) {
+      e->collision(player_);
+      for (auto&& f : entities_) {
+        if (e != f) e->collision(*f);
+      }
     }
 
     if (input.key_pressed(Input::Button::Start)) {
@@ -102,6 +109,11 @@ void GameScreen::draw(Graphics& graphics) const {
     graphics.draw_rect({0, 0}, {graphics.width(), graphics.height()}, color,
                        true);
   }
+
+#ifndef NDEBUG
+  text_.draw(graphics, std::to_string(player_.pos().x), 0, 0);
+  text_.draw(graphics, std::to_string(player_.pos().y), 0, 16);
+#endif
 }
 
 Screen* GameScreen::next_screen() const { return nullptr; }

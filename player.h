@@ -10,4 +10,9 @@ class Player : public Entity {
 
   void draw(Graphics& graphics) const;
   void charge();
+
+  circle shape() const override { return {pos_, kRadius}; };
+
+ private:
+  static constexpr float kRadius = 15.f;
 };

@@ -13,10 +13,10 @@ void Pawn::update(float t, const Entity&) {
 }
 
 void Pawn::draw(Graphics& graphics) const {
-  const int px = graphics.width() / 2 - static_cast<int>(std::round(pos_.x));
-  const int py = graphics.height() / 2 - static_cast<int>(std::round(pos_.y));
-  const int ex = px - 7.f * std::cos(facing_);
-  const int ey = py - 7.f * std::sin(facing_);
-  graphics.draw_circle({px, py}, 7.f, 0xffd800ff, true);
+  const int px = graphics.width() / 2 + static_cast<int>(std::round(pos_.x));
+  const int py = graphics.height() / 2 + static_cast<int>(std::round(pos_.y));
+  const int ex = px + kRadius * std::cos(facing_);
+  const int ey = py + kRadius * std::sin(facing_);
+  graphics.draw_circle({px, py}, kRadius, 0xffd800ff, true);
   graphics.draw_line({px, py}, {ex, ey}, 0x000f00ff);
 }

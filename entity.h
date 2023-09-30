@@ -16,8 +16,12 @@ class Entity {
   void update(float t, vec2 force);
   virtual void update(float t, const Entity&) { update(t); }
   virtual void draw(Graphics& graphics) const = 0;
+  virtual circle shape() const = 0;
 
   vec2 pos() const { return pos_; }
+  vec2 vel() const { return vel_; }
+
+  void collision(Entity& other);
 
  protected:
   vec2 pos_, vel_;
