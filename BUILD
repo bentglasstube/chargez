@@ -33,6 +33,7 @@ cc_library(
         ":space",
         "@libgam//:screen",
         "@libgam//:sprite",
+        "@libgam//:spritemap",
         "@libgam//:text",
     ],
 )

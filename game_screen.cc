@@ -39,6 +39,7 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
                   [this](const auto& e) { return out_of_bounds(*e); });
 
     if (out_of_bounds(player_)) {
+      --lives_;
       transition(State::Dead);
     }
 
@@ -60,7 +61,12 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
   } else if (state_ == State::Dead) {
     fade_timer_ += elapsed;
     if (input.key_pressed(Input::Button::Start)) {
-      transition(State::Exit);
+      if (lives_ == 0) {
+        transition(State::Exit);
+      } else {
+        player_.reset();
+        transition(State::Playing);
+      }
     }
   } else if (state_ == State::Exit) {
     fade_timer_ += elapsed;
@@ -91,6 +97,10 @@ void GameScreen::draw(Graphics& graphics) const {
   time << std::to_string(centiseconds);
   text_.draw(graphics, time.str(), graphics.width(), 0, Text::Alignment::Right);
 
+  for (int i = 0; i < lives_; ++i) {
+    sprites_.draw(graphics, 0, 16 * i, 0);
+  }
+
   if (state_ == State::Paused) {
     uint32_t color = 0x00000000 | tween(0, 0x99, fade_timer_ / 200.f);
     graphics.draw_rect({0, 0}, {graphics.width(), graphics.height()}, color,
@@ -98,11 +108,14 @@ void GameScreen::draw(Graphics& graphics) const {
     text_.draw(graphics, "Paused", graphics.width() / 2,
                graphics.height() / 2 - 8, Text::Alignment::Center);
   } else if (state_ == State::Dead) {
-    uint32_t color = 0xff000000 | tween(0, 0x69, fade_timer_ / 1000.f);
+    uint32_t color = 0xff000000 | tween(0, 0x69, fade_timer_ / 500.f);
     graphics.draw_rect({0, 0}, {graphics.width(), graphics.height()}, color,
                        true);
-    text_.draw(graphics, "Game Over", graphics.width() / 2,
-               graphics.height() / 2 - 8, Text::Alignment::Center);
+
+    if (lives_ == 0) {
+      text_.draw(graphics, "Game Over", graphics.width() / 2,
+                 graphics.height() / 2 - 8, Text::Alignment::Center);
+    }
   } else if (state_ == State::Exit) {
     uint32_t color = 0x00000000 | tween(0, 0xff, fade_timer_ / 1000.f);
     graphics.draw_rect({0, 0}, {graphics.width(), graphics.height()},
@@ -110,11 +123,6 @@ void GameScreen::draw(Graphics& graphics) const {
     graphics.draw_rect({0, 0}, {graphics.width(), graphics.height()}, color,
                        true);
   }
-
-#ifndef NDEBUG
-  text_.draw(graphics, std::to_string(player_.pos().x), 0, 0);
-  text_.draw(graphics, std::to_string(player_.pos().y), 0, 16);
-#endif
 }
 
 Screen* GameScreen::next_screen() const { return new TitleScreen(); }

@@ -10,3 +10,9 @@ void Player::draw(Graphics& graphics) const {
 }
 
 void Player::charge() { vel_ += vec2::polar(500.f, facing_); }
+
+void Player::reset() {
+  pos_ = {0.f, 0.f};
+  vel_ = {0.f, 0.f};
+  facing_ = 0.f;
+}

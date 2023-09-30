@@ -10,6 +10,7 @@ class Player : public Entity {
 
   void draw(Graphics& graphics) const override;
   void charge();
+  void reset();
 
   circle shape() const override { return {pos_, kRadius}; };
 
