@@ -61,6 +61,10 @@ struct circle {
 
 vec2 closest_point_on_line(vec2 a, vec2 b, vec2 p);
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846264338327950288419716939937510582097494459231
+#endif
+
 constexpr float angle_diff(float v, float w) {
   const float d = w - v;
   if (d > M_PI) return d - 2.f * M_PI;
