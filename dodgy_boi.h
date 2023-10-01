@@ -7,7 +7,7 @@
 class DodgyBoi : public Entity {
  public:
   DodgyBoi(vec2 pos, float facing, uint64_t seed)
-      : Entity(pos, facing, 0.05f), rng_(seed) {}
+      : Entity(pos, facing, 0.05f), rng_(seed), wander_pos_(random_pos()) {}
 
   void update(float t, const Entity&) override;
   void draw(Graphics& graphics) const override;

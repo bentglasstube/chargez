@@ -7,7 +7,7 @@
 class Kickler : public Entity {
  public:
   Kickler(vec2 pos, float facing, uint64_t seed)
-      : Entity(pos, facing, kMass), rng_(seed) {}
+      : Entity(pos, facing, kMass), rng_(seed), wander_pos_(random_pos()) {}
 
   void update(float t, const Entity&) override;
   void draw(Graphics& graphics) const override;
