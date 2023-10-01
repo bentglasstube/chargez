@@ -10,7 +10,8 @@ TitleScreen::TitleScreen()
       space_(Util::random_seed()),
       title_("title.png", 0, 0, 518, 177) {}
 
-bool TitleScreen::update(const Input& input, Audio&, unsigned int elapsed) {
+bool TitleScreen::update(const Input& input, Audio& audio,
+                         unsigned int elapsed) {
   space_.update(elapsed / 1000.f);
 
   if (lets_go) {
@@ -20,7 +21,10 @@ bool TitleScreen::update(const Input& input, Audio&, unsigned int elapsed) {
     timer_ += elapsed;
     if (timer_ > 1000) timer_ -= 1000;
     if (input.key_pressed(Input::Button::Start)) {
-      lets_go = true;
+      if (!lets_go) {
+        lets_go = true;
+        audio.play_sample("letsgo.wav");
+      }
     }
   }
   title_timer_ += elapsed;

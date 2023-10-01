@@ -14,7 +14,6 @@
 bool GameScreen::update(const Input& input, Audio& audio,
                         unsigned int elapsed) {
   if (state_ == State::Playing) {
-    if (!audio.music_playing()) audio.play_music("tunein.ogg", true);
     const float t = elapsed / 1000.f;
 
     play_timer_ += t;

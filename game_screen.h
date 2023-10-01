@@ -21,6 +21,7 @@ class GameScreen : public Screen {
   bool update(const Input&, Audio&, unsigned int) override;
   void draw(Graphics&) const override;
   Screen* next_screen() const override;
+  std::string get_music_track() const override { return "tunein.ogg"; }
 
  private:
   enum class State {
