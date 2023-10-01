@@ -16,7 +16,7 @@ class GameScreen : public Screen {
   GameScreen()
       : rng_(Util::random_seed()),
         text_("text.png"),
-        sprites_("sprites.png", 8, 16, 16) {}
+        sprites_("sprites.png", 8, 32, 32) {}
 
   bool update(const Input&, Audio&, unsigned int) override;
   void draw(Graphics&) const override;

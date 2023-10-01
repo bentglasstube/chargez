@@ -78,6 +78,7 @@ cc_library(
     srcs = ["entity.cc"],
     deps = [
         ":common",
+        ":config",
         "@libgam//:graphics",
     ],
 )
@@ -85,12 +86,14 @@ cc_library(
 cc_library(
     name = "enemies",
     hdrs = [
-        "pawn.h",
         "dodgy_boi.h",
+        "kickler.h",
+        "pawn.h",
     ],
     srcs = [
-        "pawn.cc",
         "dodgy_boi.cc",
+        "kickler.cc",
+        "pawn.cc",
     ],
     deps = [":entity"],
 )

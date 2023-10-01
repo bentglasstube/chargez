@@ -6,6 +6,7 @@ void Entity::update(float t, vec2 force) {
   pos_ += vel_ * t;
 
   // very basic friction
+  // FIXME - friction effect depends on framerate
   vel_ *= 0.95f;
 }
 
@@ -28,4 +29,10 @@ void Entity::collision(Entity& other) {
     vel_ += vperp;
     other.vel_ -= vperp;
   }
+}
+
+void Entity::dash(float speed) { vel_ += vec2::polar(speed, facing_); }
+void Entity::turn_toward(float target, float max) {
+  const float da = angle_diff(facing_, target);
+  facing_ += da < 0 ? std::max(da, -max) : std::min(da, max);
 }

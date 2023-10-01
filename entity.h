@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common.h"
+#include "config.h"
 #include "graphics.h"
 
 class Entity {
@@ -27,4 +28,19 @@ class Entity {
   vec2 pos_, vel_;
   float facing_ = 0;
   const float mass_ = 1.f;
+
+  float toward(const Entity& e) const { return (e.pos_ - pos_).angle(); }
+  float toward(vec2 p) const { return (p - pos_).angle(); }
+  float dist2(const Entity& e) const { return pos_.dist2(e.pos_); }
+  float dist2(vec2 p) const { return pos_.dist2(p); }
+
+  void dash(float speed);
+  void turn_toward(float target, float max);
+  void turn_toward(const Entity& e, float max) { turn_toward(toward(e), max); }
+  void turn_toward(vec2 p, float max) { turn_toward(toward(p), max); }
+
+  static Graphics::Point screen_coords(vec2 p) {
+    return {kConfig.graphics.width / 2 + static_cast<int>(std::round(p.x)),
+            kConfig.graphics.height / 2 + static_cast<int>(std::round(p.y))};
+  }
 };

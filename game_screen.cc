@@ -4,6 +4,7 @@
 
 #include "common.h"
 #include "dodgy_boi.h"
+#include "kickler.h"
 #include "pawn.h"
 #include "title_screen.h"
 
@@ -99,7 +100,7 @@ void GameScreen::draw(Graphics& graphics) const {
   text_.draw(graphics, time.str(), graphics.width(), 0, Text::Alignment::Right);
 
   for (int i = 0; i < lives_; ++i) {
-    sprites_.draw(graphics, 0, 16 * i, 0);
+    sprites_.draw(graphics, 13, 32 * i, 0);
   }
 
   if (state_ == State::Paused) {
@@ -124,10 +125,6 @@ void GameScreen::draw(Graphics& graphics) const {
     graphics.draw_rect({0, 0}, {graphics.width(), graphics.height()}, color,
                        true);
   }
-
-#ifndef NDEBUG
-  text_.draw(graphics, std::to_string(player_.vel().mag()), 0, 0);
-#endif
 }
 
 Screen* GameScreen::next_screen() const { return new TitleScreen(); }
@@ -144,11 +141,14 @@ void GameScreen::spawn_enemy() {
 
   const float roll = std::uniform_real_distribution<float>(0.f, 1.f)(rng_);
 
-  if (roll < 0.8f) {
+  if (roll < 0.7f) {
     entities_.emplace_back(new Pawn{vec2::polar(340.f, facing), back, rng_()});
-  } else {
+  } else if (roll < 0.9f) {
     entities_.emplace_back(
         new DodgyBoi{vec2::polar(340.f, facing), back, rng_()});
+  } else {
+    entities_.emplace_back(
+        new Kickler{vec2::polar(340.f, facing), back, rng_()});
   }
 }
 

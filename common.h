@@ -67,3 +67,5 @@ constexpr float angle_diff(float v, float w) {
   if (d < -M_PI) return d + 2.f * M_PI;
   return d;
 }
+
+constexpr float square(float n) { return n * n; }
