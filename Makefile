@@ -4,7 +4,7 @@ ifeq ($(UNAME), Windows)
 endif
 
 NAME=chargez
-GAMDEPS=audio game graphics input screen sprite text util
+GAMDEPS=audio game graphics input screen sprite spritemap text util
 
 SOURCES=$(wildcard *.cc) $(patsubst %,gam/%.cc,$(GAMDEPS))
 RENDERS=$(patsubts resources/%.ase,content/%.png,$(wildcard resources/*.ase))
@@ -60,7 +60,7 @@ run: $(EXECUTABLE)
 renders: $(RENDERS)
 
 content/%.png: resources/%.ase
-	asperite --batch $< --save-as $@
+	aseprite --batch $< --save-as $@
 
 $(EXECUTABLE): $(OBJECTS) $(EXTRA) $(CONTENT)
 	$(CXX) $(CPPFLAGS) $(LDFLAGS) -o $@ $(OBJECTS) $(EXTRA) $(LDLIBS)
