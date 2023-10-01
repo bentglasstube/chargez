@@ -150,8 +150,6 @@ void GameScreen::draw(Graphics& graphics) const {
     graphics.draw_rect({0, 0}, {graphics.width(), graphics.height()}, color,
                        true);
   }
-
-  text_.draw(graphics, std::to_string(dizzy_timer_), 0, 64);
 }
 
 Screen* GameScreen::next_screen() const { return new TitleScreen(); }
