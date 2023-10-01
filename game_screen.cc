@@ -13,9 +13,10 @@
 
 bool GameScreen::update(const Input& input, Audio& audio,
                         unsigned int elapsed) {
-  if (state_ == State::Playing) {
-    const float t = elapsed / 1000.f;
+  const float t = elapsed / 1000.f;
+  space_.update(t);
 
+  if (state_ == State::Playing) {
     play_timer_ += t;
     spawn_timer_ += t;
     dizzy_timer_ -= t;
@@ -100,6 +101,9 @@ bool GameScreen::update(const Input& input, Audio& audio,
 }
 
 void GameScreen::draw(Graphics& graphics) const {
+  space_.draw(graphics);
+  mask_.draw(graphics, 0, 0);
+
   for (const auto& e : entities_) {
     e->draw(graphics);
   }

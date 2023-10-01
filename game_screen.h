@@ -7,6 +7,8 @@
 #include "entity.h"
 #include "player.h"
 #include "screen.h"
+#include "space.h"
+#include "sprite.h"
 #include "spritemap.h"
 #include "text.h"
 #include "util.h"
@@ -16,7 +18,9 @@ class GameScreen : public Screen {
   GameScreen()
       : rng_(Util::random_seed()),
         text_("text.png"),
-        sprites_("sprites.png", 8, 32, 32) {}
+        sprites_("sprites.png", 8, 32, 32),
+        mask_("mask.png", 0, 0, 1280, 720),
+        space_(rng_()) {}
 
   bool update(const Input&, Audio&, unsigned int) override;
   void draw(Graphics&) const override;
@@ -40,6 +44,8 @@ class GameScreen : public Screen {
   std::vector<std::unique_ptr<Entity>> entities_;
   Text text_;
   SpriteMap sprites_;
+  Sprite mask_;
+  Space space_;
   int fade_timer_ = 0;
   float play_timer_ = 0.f;
   float spawn_timer_ = 0.f;
