@@ -11,8 +11,10 @@
 #include "pusher.h"
 #include "title_screen.h"
 
-bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
+bool GameScreen::update(const Input& input, Audio& audio,
+                        unsigned int elapsed) {
   if (state_ == State::Playing) {
+    audio.play_music("tunein.ogg", true);
     const float t = elapsed / 1000.f;
 
     play_timer_ += t;
@@ -47,6 +49,7 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
 
     if (out_of_bounds(player_)) {
       --lives_;
+      if (lives_ == 0) audio.play_music("dropout.ogg", true);
       transition(State::Dead);
     }
 
@@ -60,11 +63,13 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
     }
 
     if (input.key_pressed(Input::Button::Start)) {
+      audio.music_volume(3);
       transition(State::Paused);
     }
   } else if (state_ == State::Paused) {
     fade_timer_ += elapsed;
     if (input.key_pressed(Input::Button::Start)) {
+      audio.music_volume(10);
       transition(State::Playing);
     }
   } else if (state_ == State::Dead) {
@@ -74,6 +79,7 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
         transition(State::Exit);
       } else {
         player_.reset();
+        dizzy_timer_ = 0.f;
         transition(State::Playing);
       }
     }
