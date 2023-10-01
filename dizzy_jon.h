@@ -15,10 +15,10 @@ class DizzyJon : public Entity {
   circle shape() const override { return {pos_, kRadius}; }
 
  protected:
-  static constexpr float kMass = 0.5f;
+  static constexpr float kMass = 0.1f;
   static constexpr float kRadius = 15.f;
   static constexpr float kTurnSpeed = M_PI / 2.f;
-  static constexpr float kMoveSpeed = 100.f;
+  static constexpr float kMoveSpeed = 20.f;
 
   float animation_timer_ = 0.f;
 
