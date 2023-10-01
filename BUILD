@@ -91,12 +91,14 @@ cc_library(
         "dodgy_boi.h",
         "kickler.h",
         "pawn.h",
+        "pusher.h",
     ],
     srcs = [
         "dizzy_jon.cc",
         "dodgy_boi.cc",
         "kickler.cc",
         "pawn.cc",
+        "pusher.cc",
     ],
     deps = [":entity"],
 )

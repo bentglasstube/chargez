@@ -7,6 +7,7 @@
 #include "dodgy_boi.h"
 #include "kickler.h"
 #include "pawn.h"
+#include "pusher.h"
 #include "title_screen.h"
 
 bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
@@ -148,16 +149,18 @@ void GameScreen::spawn_enemy() {
 
   const float roll = std::uniform_real_distribution<float>(0.f, 1.f)(rng_);
 
-  if (roll < 0.7f) {
+  if (roll < 0.6f) {
     entities_.emplace_back(new Pawn{vec2::polar(340.f, facing), back, rng_()});
-  } else if (roll < 0.9f) {
+  } else if (roll < 0.8f) {
     entities_.emplace_back(
         new DodgyBoi{vec2::polar(340.f, facing), back, rng_()});
-  } else if (roll < 0.95f) {
+  } else if (roll < 0.9f) {
     entities_.emplace_back(
         new Kickler{vec2::polar(340.f, facing), back, rng_()});
-  } else {
+  } else if (roll < 0.99f) {
     entities_.emplace_back(new DizzyJon{vec2::polar(340.f, facing), back});
+  } else {
+    entities_.emplace_back(new Pusher{vec2::polar(340.f, facing), back});
   }
 }
 
