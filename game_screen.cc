@@ -5,6 +5,7 @@
 #include "common.h"
 #include "dizzy_jon.h"
 #include "dodgy_boi.h"
+#include "hacker.h"
 #include "kickler.h"
 #include "pawn.h"
 #include "pusher.h"
@@ -109,6 +110,10 @@ void GameScreen::draw(Graphics& graphics) const {
     sprites_.draw(graphics, 13, 32 * i, 0);
   }
 
+  for (const auto& e : entities_) {
+    e->draw_overlay(graphics);
+  }
+
   if (state_ == State::Paused) {
     uint32_t color = 0x00000000 | tween(0, 0x99, fade_timer_ / 200.f);
     graphics.draw_rect({0, 0}, {graphics.width(), graphics.height()}, color,
@@ -148,19 +153,20 @@ void GameScreen::spawn_enemy() {
   const float back = facing + static_cast<float>(M_PI);
 
   const float roll = std::uniform_real_distribution<float>(0.f, 1.f)(rng_);
+  const vec2 pos = vec2::polar(340.f, facing);
 
   if (roll < 0.6f) {
-    entities_.emplace_back(new Pawn{vec2::polar(340.f, facing), back, rng_()});
+    entities_.emplace_back(new Pawn{pos, back, rng_()});
   } else if (roll < 0.8f) {
-    entities_.emplace_back(
-        new DodgyBoi{vec2::polar(340.f, facing), back, rng_()});
+    entities_.emplace_back(new DodgyBoi{pos, back, rng_()});
   } else if (roll < 0.9f) {
-    entities_.emplace_back(
-        new Kickler{vec2::polar(340.f, facing), back, rng_()});
+    entities_.emplace_back(new Kickler{pos, back, rng_()});
+  } else if (roll < 0.95f) {
+    entities_.emplace_back(new DizzyJon{pos, back});
   } else if (roll < 0.99f) {
-    entities_.emplace_back(new DizzyJon{vec2::polar(340.f, facing), back});
+    entities_.emplace_back(new Hacker{pos, back, rng_()});
   } else {
-    entities_.emplace_back(new Pusher{vec2::polar(340.f, facing), back});
+    entities_.emplace_back(new Pusher{pos, back});
   }
 }
 

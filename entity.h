@@ -19,8 +19,10 @@ class Entity {
 
   void update(float t) { update(t, {0, 0}); }
   void update(float t, vec2 force);
+  void update(float t, float force) { update(t, vec2::polar(force, facing_)); }
   virtual void update(float t, const Entity&) { update(t); }
   virtual void draw(Graphics& graphics) const = 0;
+  virtual void draw_overlay(Graphics& graphics) const {}
   virtual circle shape() const = 0;
 
   vec2 pos() const { return pos_; }

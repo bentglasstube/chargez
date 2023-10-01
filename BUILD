@@ -89,6 +89,7 @@ cc_library(
     hdrs = [
         "dizzy_jon.h",
         "dodgy_boi.h",
+        "hacker.h",
         "kickler.h",
         "pawn.h",
         "pusher.h",
@@ -96,6 +97,7 @@ cc_library(
     srcs = [
         "dizzy_jon.cc",
         "dodgy_boi.cc",
+        "hacker.cc",
         "kickler.cc",
         "pawn.cc",
         "pusher.cc",
