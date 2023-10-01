@@ -53,6 +53,11 @@ void Hacker::add_random_glitch() {
   std::uniform_int_distribution<int> h(4, 12);
   std::uniform_real_distribution<float> duration(0.1f, 0.3f);
 
-  glitches_.emplace_back(color(rng_) < 0.5 ? 0xffffffff : 0x000000ff, x(rng_),
-                         y(rng_), w(rng_), h(rng_), duration(rng_));
+  const Glitch g = {color(rng_) < 0.5 ? 0xffffffff : 0x000000ff,
+                    x(rng_),
+                    y(rng_),
+                    w(rng_),
+                    h(rng_),
+                    duration(rng_)};
+  glitches_.push_back(g);
 }
