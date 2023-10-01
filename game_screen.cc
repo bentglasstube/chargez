@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "common.h"
+#include "dizzy_jon.h"
 #include "dodgy_boi.h"
 #include "kickler.h"
 #include "pawn.h"
@@ -14,6 +15,7 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
 
     play_timer_ += t;
     spawn_timer_ += t;
+    dizzy_timer_ -= t;
 
     if (spawn_timer_ > 1.f) {
       spawn_timer_ -= 1.f;
@@ -29,7 +31,8 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
     if (input.key_pressed(Input::Button::A)) player_.charge();
 
     if (force.mag() > 0.f) {
-      player_.update(t, vec2::polar(1000.f, force.angle()));
+      const float dir = dizzy_timer_ > 0.f ? -1000.f : 1000.f;
+      player_.update(t, vec2::polar(dir, force.angle()));
     } else {
       player_.update(t);
     }
@@ -46,7 +49,9 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
     }
 
     for (auto&& e : entities_) {
-      e->collision(player_);
+      if (e->collision(player_) && e->dizzying()) {
+        dizzy_timer_ = kDizzyDuration;
+      }
       for (auto&& f : entities_) {
         if (e != f) e->collision(*f);
       }
@@ -125,6 +130,8 @@ void GameScreen::draw(Graphics& graphics) const {
     graphics.draw_rect({0, 0}, {graphics.width(), graphics.height()}, color,
                        true);
   }
+
+  text_.draw(graphics, std::to_string(dizzy_timer_), 0, 64);
 }
 
 Screen* GameScreen::next_screen() const { return new TitleScreen(); }
@@ -146,9 +153,11 @@ void GameScreen::spawn_enemy() {
   } else if (roll < 0.9f) {
     entities_.emplace_back(
         new DodgyBoi{vec2::polar(340.f, facing), back, rng_()});
-  } else {
+  } else if (roll < 0.95f) {
     entities_.emplace_back(
         new Kickler{vec2::polar(340.f, facing), back, rng_()});
+  } else {
+    entities_.emplace_back(new DizzyJon{vec2::polar(340.f, facing), back});
   }
 }
 

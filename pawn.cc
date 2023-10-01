@@ -23,7 +23,5 @@ void Pawn::draw(Graphics& graphics) const {
   const auto t = screen_coords(pos_ + vec2::polar(kRadius * 2, target_dir_));
   graphics.draw_line(p, f, 0x000000ff);
   graphics.draw_line(p, t, 0xff00d8ff);
-#else
-
 #endif
 }

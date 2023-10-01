@@ -87,11 +87,13 @@ cc_library(
 cc_library(
     name = "enemies",
     hdrs = [
+        "dizzy_jon.h",
         "dodgy_boi.h",
         "kickler.h",
         "pawn.h",
     ],
     srcs = [
+        "dizzy_jon.cc",
         "dodgy_boi.cc",
         "kickler.cc",
         "pawn.cc",

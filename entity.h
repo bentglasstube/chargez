@@ -26,7 +26,8 @@ class Entity {
   vec2 pos() const { return pos_; }
   vec2 vel() const { return vel_; }
 
-  void collision(Entity& other);
+  bool collision(Entity& other);
+  virtual bool dizzying() const { return false; }
 
  protected:
   SpriteMap sprites_;

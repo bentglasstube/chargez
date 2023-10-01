@@ -30,6 +30,9 @@ class GameScreen : public Screen {
     Exit,
   };
 
+  static constexpr float kPlayerSpeed = 1000.f;
+  static constexpr float kDizzyDuration = 2.5f;
+
   std::mt19937 rng_;
   State state_ = State::Playing;
   Player player_;
@@ -39,6 +42,7 @@ class GameScreen : public Screen {
   int fade_timer_ = 0;
   float play_timer_ = 0.f;
   float spawn_timer_ = 0.f;
+  float dizzy_timer_ = 0.f;
   int lives_ = 3;
 
   void transition(State state);
