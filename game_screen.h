@@ -43,6 +43,7 @@ class GameScreen : public Screen {
   float play_timer_ = 0.f;
   float spawn_timer_ = 0.f;
   float dizzy_timer_ = 0.f;
+  float hit_sound_timer_ = 0.f;
   int lives_ = 3;
 
   void transition(State state);

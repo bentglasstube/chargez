@@ -32,7 +32,10 @@ bool GameScreen::update(const Input& input, Audio& audio,
     if (input.key_held(Input::Button::Left)) force.x -= 1.f;
     if (input.key_held(Input::Button::Right)) force.x += 1.f;
 
-    if (input.key_pressed(Input::Button::A)) player_.charge();
+    if (input.key_pressed(Input::Button::A)) {
+      player_.charge();
+      audio.play_sample("dash.wav");
+    }
 
     if (force.mag() > 0.f) {
       const float dir = dizzy_timer_ > 0.f ? -1000.f : 1000.f;
@@ -48,14 +51,20 @@ bool GameScreen::update(const Input& input, Audio& audio,
                   [this](const auto& e) { return out_of_bounds(*e); });
 
     if (out_of_bounds(player_)) {
+      audio.play_sample("dead.wav");
       --lives_;
       if (lives_ == 0) audio.play_music("dropout.ogg", true);
       transition(State::Dead);
     }
 
     for (auto&& e : entities_) {
-      if (e->collision(player_) && e->dizzying()) {
-        dizzy_timer_ = kDizzyDuration;
+      if (e->collision(player_)) {
+        if (e->dizzying()) {
+          if (dizzy_timer_ <= 0.f) audio.play_sample("dizzy.wav");
+          dizzy_timer_ = kDizzyDuration;
+        } else {
+          audio.play_random_sample("hit.wav", 9);
+        }
       }
       for (auto&& f : entities_) {
         if (e != f) e->collision(*f);

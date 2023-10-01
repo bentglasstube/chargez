@@ -10,6 +10,8 @@ void Entity::update(float t, vec2 force) {
   vel_ *= 0.95f;
 }
 
+#include <iostream>
+
 bool Entity::collision(Entity& other) {
   const float r = shape().radius + other.shape().radius;
   const vec2 d = other.pos_ - pos_;
