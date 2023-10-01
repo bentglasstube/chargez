@@ -13,21 +13,20 @@ void Entity::update(float t, vec2 force) {
 bool Entity::collision(Entity& other) {
   const float r = shape().radius + other.shape().radius;
   const vec2 d = other.pos_ - pos_;
+  const float d2 = d.mag2();
 
-  if (d.mag2() <= r * r) {
-    const vec2 move = vec2::polar((r - d.mag()) / 2, d.angle());
+  if (d2 <= r * r) {
+    const vec2 move = vec2::polar(r - d.mag(), d.angle()) / 2.f;
     pos_ -= move;
     other.pos_ += move;
 
-    const vec2 tan = d.perp().norm();
-    const vec2 rel = other.vel_ - vel_;
-    const float length = rel * tan;
+    const float total_mass = mass_ + other.mass_;
+    const vec2 dv = other.vel_ - vel_;
+    const vec2 col = d * (2 * (dv * d) / total_mass / d2);
 
-    const vec2 vtan = tan * length;
-    const vec2 vperp = rel - vtan;
+    vel_ += col * other.mass_;
+    other.vel_ -= col * mass_;
 
-    vel_ += vperp;
-    other.vel_ -= vperp;
     return true;
   } else {
     return false;
