@@ -18,13 +18,14 @@ void DodgyBoi::update(float t, const Entity& player) {
 }
 
 void DodgyBoi::draw(Graphics& graphics) const {
-  const auto p = screen_coords(pos_);
-  graphics.draw_circle(p, kRadius, 0x00d8ffff, true);
+  const auto d = draw_point(pos_, 16);
+  sprites_.draw(graphics, 5, d.x, d.y);
 
 #ifndef NDEBUG
+  const auto p = screen_coords(pos_);
   const auto f = screen_coords(pos_ + vec2::polar(kRadius, facing_));
-  graphics.draw_line(p, f, 0x000000ff);
   const auto t = screen_coords(wander_pos_);
+  graphics.draw_line(p, f, 0x000000ff);
   graphics.draw_line(p, t, 0xff00d8ff);
 #endif
 }

@@ -14,13 +14,16 @@ void Pawn::update(float t, const Entity&) {
 }
 
 void Pawn::draw(Graphics& graphics) const {
-  const auto p = screen_coords(pos_);
-  graphics.draw_circle(p, kRadius, 0xffd800ff, true);
+  const auto d = draw_point(pos_, 16);
+  sprites_.draw(graphics, 4, d.x, d.y);
 
 #ifndef NDEBUG
+  const auto p = screen_coords(pos_);
   const auto f = screen_coords(pos_ + vec2::polar(kRadius, facing_));
   const auto t = screen_coords(pos_ + vec2::polar(kRadius * 2, target_dir_));
   graphics.draw_line(p, f, 0x000000ff);
   graphics.draw_line(p, t, 0xff00d8ff);
+#else
+
 #endif
 }

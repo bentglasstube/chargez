@@ -34,17 +34,12 @@ void Kickler::update(float t, const Entity& player) {
 }
 
 void Kickler::draw(Graphics& graphics) const {
-  const auto p = screen_coords(pos_);
-  const uint32_t color = state_ == State::Wandering   ? 0x00ff00ff
-                         : state_ == State::Following ? 0x0000ffff
-                                                      : 0xff0000ff;
-
-  graphics.draw_circle(p, kRadius, color, true);
-
+  const auto d = draw_point(pos_, 16);
+  sprites_.draw(graphics, sprite(), d.x, d.y);
 #ifndef NDEBUG
+  const auto p = screen_coords(pos_);
   const auto f = screen_coords(pos_ + vec2::polar(kRadius, facing_));
   graphics.draw_line(p, f, 0x000000ff);
-
   if (state_ == State::Wandering) {
     const auto t = screen_coords(wander_pos_);
     graphics.draw_line(p, t, 0xff00d8ff);
@@ -56,4 +51,12 @@ vec2 Kickler::random_pos() {
   const float r = std::uniform_real_distribution<float>(0.f, 300.f)(rng_);
   const float a = std::uniform_real_distribution<float>(0.f, 2.f * M_PI)(rng_);
   return vec2::polar(r, a);
+}
+
+int Kickler::sprite() const {
+  if (state_ == State::Charging) {
+    return tween(12, 8, charge_timer_ / kChargeTime);
+  } else {
+    return 8;
+  }
 }

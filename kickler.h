@@ -39,4 +39,6 @@ class Kickler : public Entity {
   State state_ = State::Wandering;
 
   vec2 random_pos();
+
+  int sprite() const;
 };

@@ -15,7 +15,7 @@ class DodgyBoi : public Entity {
   circle shape() const override { return {pos_, kRadius}; }
 
  protected:
-  static constexpr float kRadius = 12.f;
+  static constexpr float kRadius = 7.f;
   static constexpr float kMoveSpeed = 10.f;
   static constexpr float kTurnSpeed = 4.f * M_PI;
   static constexpr float kDodgeCooldown = 0.5f;

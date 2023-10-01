@@ -80,6 +80,7 @@ cc_library(
         ":common",
         ":config",
         "@libgam//:graphics",
+        "@libgam//:spritemap",
     ],
 )
 

@@ -3,13 +3,17 @@
 #include "common.h"
 #include "config.h"
 #include "graphics.h"
+#include "spritemap.h"
 
 class Entity {
  public:
-  Entity() {}
-  Entity(vec2 pos) : pos_(pos) {}
+  Entity() : Entity({0.f, 0.f}) {}
+  Entity(vec2 pos) : Entity(pos, 0.f, 1.f) {}
   Entity(vec2 pos, float facing, float mass)
-      : pos_(pos), facing_(facing), mass_(mass) {}
+      : sprites_("sprites.png", 8, 32, 32),
+        pos_(pos),
+        facing_(facing),
+        mass_(mass) {}
 
   virtual ~Entity() {}
 
@@ -25,6 +29,7 @@ class Entity {
   void collision(Entity& other);
 
  protected:
+  SpriteMap sprites_;
   vec2 pos_, vel_;
   float facing_ = 0;
   const float mass_ = 1.f;
@@ -42,5 +47,12 @@ class Entity {
   static Graphics::Point screen_coords(vec2 p) {
     return {kConfig.graphics.width / 2 + static_cast<int>(std::round(p.x)),
             kConfig.graphics.height / 2 + static_cast<int>(std::round(p.y))};
+  }
+
+  static Graphics::Point draw_point(vec2 p, int offset) {
+    const int px = static_cast<int>(std::round(p.x));
+    const int py = static_cast<int>(std::round(p.y));
+    return {kConfig.graphics.width / 2 + px - offset,
+            kConfig.graphics.height / 2 + py - offset};
   }
 };
